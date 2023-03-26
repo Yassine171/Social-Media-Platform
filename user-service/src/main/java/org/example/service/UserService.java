@@ -1,5 +1,6 @@
 package org.example.service;
 
+import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import org.example.dto.AuthenticationResponse;
 import org.example.dto.LoginRequest;
@@ -56,7 +57,7 @@ public class UserService {
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Soscial Media Platform, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:8081/api/auth/accountVerification/" + token+"\n ."));
+                "http://localhost:9898/users/accountVerification/" + token+"\n ."));
     }
 
     @Transactional(readOnly = true)
@@ -133,4 +134,16 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
+
+    public boolean validateToken(String token) throws JwtException {
+        String email = jwtService.extractUsername(token);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+        return true;
+        } else {
+          return false;
+        }
+    }
+
 }
