@@ -13,6 +13,13 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/users/**
+          filters:
+            - AuthenticationFilter
+
+        - id: auth-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/auth/**
 
   application:
     name: API-GATEWAY
