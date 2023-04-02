@@ -21,30 +21,30 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final AuthService userService;
+    private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody RegisterRequest registerRequest) {
-        userService.signup(registerRequest);
+        authService.signup(registerRequest);
         return new ResponseEntity<>("User Registration Successful",
                 OK);
     }
 
     @GetMapping("accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
-        userService.verifyAccount(token);
+        authService.verifyAccount(token);
         return new ResponseEntity<>("Account Activated Successfully", OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        return userService.login(loginRequest);
+        return authService.login(loginRequest);
     }
 
     @PostMapping("/refresh/token")
     public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return userService.refreshToken(refreshTokenRequest);
+        return authService.refreshToken(refreshTokenRequest);
     }
 
     @PostMapping("/logout")
@@ -55,7 +55,7 @@ public class AuthController {
 
     @PostMapping("/validate")
     public boolean validateToken(@RequestBody Map<String, String> payload) {
-        return userService.validateToken(payload.get("token"));
+        return authService.validateToken(payload.get("token"));
     }
 
 }
