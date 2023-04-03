@@ -23,7 +23,6 @@ public class Post {
     private String content;
 
     @Column(nullable = false)
-    private Long user_id;
+    private Long userId;
 
-    // other fields, getters and setters
 }

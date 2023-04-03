@@ -54,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/validate")
-    public boolean validateToken(@RequestBody Map<String, String> payload) {
+    public Long validateToken(@RequestBody Map<String, String> payload) {
         return authService.validateToken(payload.get("token"));
     }
 

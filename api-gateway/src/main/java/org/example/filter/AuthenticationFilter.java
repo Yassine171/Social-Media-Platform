@@ -36,10 +36,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     authHeader = authHeader.substring(7);
                 }
                 try {
-                    //REST call to AUTH service
-                    boolean tokenValid = template.postForObject("http://USER-SERVICE/auth/validate", Collections.singletonMap("token", authHeader), Boolean.class);
-                    if (!tokenValid) {
-                        throw new RuntimeException("invalid access...!");
+                    Long userId = template.postForObject("http://USER-SERVICE/auth/validate", Collections.singletonMap("token", authHeader), Long.class);
+                    if (userId != null) {
+                        // add user ID to request headers
+                        exchange.getRequest().mutate().header("user-id", userId.toString()).build();
                     }
 
                 } catch (Exception e) {

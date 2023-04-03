@@ -135,15 +135,11 @@ public class AuthService {
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 
-    public boolean validateToken(String token) throws JwtException {
+    public Long validateToken(String token) throws JwtException {
         String email = jwtService.extractUsername(token);
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if (optionalUser.isPresent()) {
-        return true;
-        } else {
-          return false;
-        }
+        return optionalUser.get().getId();
     }
 
 }
